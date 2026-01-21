@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Program Copy</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: fit-content;
+    }
+
+    button {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      width: 80px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    textarea {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <button onclick="copy('p1')">1a</button>
+  <button onclick="copy('p2')">1b</button>
+  <button onclick="copy('p3')">1c</button>
+  <button onclick="copy('p4')">2a</button>
+  <button onclick="copy('p5')">3</button>
+  <button onclick="copy('p6')">4a</button>
+  <button onclick="copy('p7')">4b.</button>
+  <button onclick="copy('p8')">5</button>
+  <button onclick="copy('p8')">6a</button>
+
+</div>
+
+<!-- Programs stored safely -->
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+<textarea id="p1">#include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+
+int main()
+{
+    int id, childid;
+    id = getpid();
+    childid = fork();
+
+    if(childid > 0)
+    {
+        printf("\nI am in the parent process %d", id);
+        printf("\nI am in the parent process %d", getpid());
+        printf("\nI am in the parent process %d", getppid());
+    }
+    else
+    {
+        printf("\nI am in the child process %d", id);
+        printf("\nI am in the child process %d", getpid());
+        printf("\nI am in the child process %d", getppid());
+    }
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p2">#include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<stdlib.h>
+#include<sys/wait.h>
+#include<errno.h>
+
+int main()
+{
+    pid_t pid;
+    int rv;
+
+    pid = fork();
+    
+    if(pid == -1)
+    {
+        perror("fork");
+        exit(1);
+    }
+    else if(pid == 0)
+    {
+        printf("\nChild: this is child process\n");
+        fflush(stdout);
+        printf("Child: My pid is %d\n", getpid());
+        printf("Child: My parent's pid is %d\n", getppid());
+        printf("Child: Enter my exit status(make it small): ");
+        scanf("%d", &rv);
+        printf("Child: i'm outta here!\n");
+        exit(rv);
+    }
+    else{
+        printf("\nParent: this is parent process\n");
+        printf("Parent: My pid is %d\n", getpid());
+        fflush(stdout);
+        wait(&rv);
+        printf("Parent: My child's pid is %d\n", pid);
+        printf("Parent: My exit status is %d\n", WEXITSTATUS(rv));
+        printf("Parent: i'm outta here!\n");
+    }
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p3">#include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+
+int main(int argc, char *argv[])
+{
+    printf("Before execv\n");
+    execv("/bin/ls", argv);
+    printf("After execv\n");
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p4">#include <stdio.h>
+
+int main()
+{
+    int n;
+    int at[10], bt[10], st[10], ft[10], wt[10], tt[10];
+    char pn[10][10];
+    int totwt = 0, tottt = 0;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++)
+    {
+        printf("Enter process name, arrival time, burst time: ");
+        scanf("%s %d %d", pn[i], &at[i], &bt[i]);
+    }
+
+    // FCFS Scheduling
+    for(int i = 0; i < n; i++)
+    {
+        if(i == 0)
+            st[i] = at[i];
+        else
+            st[i] = (ft[i-1] > at[i]) ? ft[i-1] : at[i];
+
+        ft[i] = st[i] + bt[i];
+        wt[i] = st[i] - at[i];
+        tt[i] = ft[i] - at[i];
+
+        totwt += wt[i];
+        tottt += tt[i];
+    }
+
+    printf("\nPname\tAT\tBT\tST\tFT\tWT\tTT\n");
+    for(int i = 0; i < n; i++)
+    {
+        printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\n",
+               pn[i], at[i], bt[i], st[i], ft[i], wt[i], tt[i]);
+    }
+
+    printf("\nAverage Waiting Time = %.2f", (float)totwt / n);
+    printf("\nAverage Turnaround Time = %.2f\n", (float)tottt / n);
+
+    return 0;
+}
+
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p5">#include<stdio.h>
+#include<stdlib.h>
+
+int mutex = 1, full = 0, empty = 10, data = 0;
+
+void producer()
+{
+    --mutex;
+    ++full;
+    --empty;
+    data++;
+    printf("\nProducer produces item number: %d", data);
+    ++mutex;
+}
+void consumer()
+{
+    --mutex;
+    --full;
+    ++empty;
+    printf("\nConsumer consumes item number: %d", data);
+    data--;
+    ++mutex;
+}
+
+int main()
+{
+    int n;
+    printf("\n1.Producer");
+    printf("\n2.Consumer");
+    printf("\n3.Exit");
+    while(1)
+    {
+        printf("\nEnter your choice: ");
+        scanf("%d", &n);
+        switch (n)
+        {
+            case 1:
+                if(mutex == 1 && empty != 0)
+                    producer();
+                else   
+                    printf("\nBuffer is full. Cannot produce.");
+                break;
+            case 2:
+                if(mutex == 1 && full != 0)
+                    consumer();
+                else    
+                    printf("\nBuffer is empty. Cannot consume.");
+                break;
+            case 3:
+                exit(0);
+                break;
+        }
+    }
+    return 0;
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p6">#include<stdio.h>
+#include<string.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<sys/types.h>
+#include<unistd.h>
+
+int main()
+{
+    int fd;
+    char *myfifo = "/tmp/myfifo";
+    char writemsg[80], readmsg[80];
+    mkfifo(myfifo, 0666);
+
+    while(1)
+    {
+        fd = open(myfifo, O_WRONLY);
+        fgets(writemsg, 80, stdin);
+        write(fd, writemsg, strlen(writemsg)+1);
+        close(fd);
+
+        fd = open(myfifo, O_RDONLY);
+        read(fd, readmsg, 80);
+        printf("User2: %s", readmsg);
+        close(fd);
+    }
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p7">#include<stdio.h>
+#include<string.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<sys/types.h>
+#include<unistd.h>
+
+int main()
+{
+    int fd;
+    char *myfifo = "/tmp/myfifo";
+    char writemsg[80], readmsg[80];
+    mkfifo(myfifo, 0666);
+
+    while(1)
+    {
+        fd = open(myfifo, O_RDONLY);
+        read(fd, readmsg, 80);
+        printf("User1: %s", readmsg);
+        close(fd);  
+
+        fd = open(myfifo, O_WRONLY);
+        fgets(writemsg, 80, stdin);
+        write(fd, writemsg, strlen(writemsg)+1);
+        close(fd);
+    }
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p8">#include<stdio.h>
+
+int main()
+{
+    int n, m, i, j, k, count = 0;
+    int max[10][10], alloc[10][10], need[10][10];
+    int avail[10], work[10], safe[10];
+    int finish[10] = {0};
+
+    printf("Enter number of process: ");
+    scanf("%d", &n);
+    printf("Enter number of resources: ");
+    scanf("%d", &m);
+    printf("Enter number of available resources: ");
+    for(i = 0; i < m; i++)
+        scanf("%d", &avail[i]);
+    printf("Enter the MAX matrix: \n");
+    for(i = 0; i < n; i++) 
+        for(j = 0; j < m; j++)
+            scanf("%d", &max[i][j]);
+    printf("Enter the allocation matrix: \n");
+    for(i = 0; i < n; i++) 
+        for(j = 0; j < m; j++)
+            scanf("%d", &alloc[i][j]);
+    for(i = 0; i < n; i++) 
+        for(j = 0; j < m; j++)
+            need[i][j] = max[i][j] - alloc[i][j];
+    for(j = 0; j < m; j++)
+        work[j] = avail[j];
+
+    while(count < n)
+    {   
+        int found = 0;
+        for(i = 0; i < n; i++)
+        {
+            if(!finish[i])
+            {
+                for(j = 0; j < m; j++)
+                {
+                    if(need[i][j] > work[j])
+                    {
+                        break;
+                    }
+                }
+                if(j == m)
+                {
+                    for(k = 0; k < m; k++)
+                    {
+                        work[k] += alloc[i][k];
+                    }
+                    safe[count++] = i;
+                    found = 1;
+                    finish[i] = 1;
+                }
+            }
+        }
+        if(!found)
+        {
+            printf("\nThe system is NOT in safe state\n");
+            return 0;
+        }
+    }
+    printf("\nThe system is in a safe state\n Safe sequence is : ");
+    for(i = 0; i < n; i++)
+        printf("P%d ", safe[i]);
+    return 0;
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p9">#include<stdio.h>
+#define MAX 25
+
+int main()
+{
+    int i, j, nb, nf, temp;
+    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
+    static int bf[MAX], ff[MAX];
+
+    printf("\n----First Fit----\n");
+    printf("\nEnter the number of blocks: ");
+    scanf("%d", &nb);
+
+    printf("Enter the number of files: ");
+    scanf("%d", &nf);
+
+    printf("\nEnter the size of the blocks: \n");
+    for(i = 1; i <= nb; i++)
+    {
+        printf("Block %d: ", i);
+        scanf("%d", &b[i]);
+    }
+    printf("\nEnter the size of files: \n");
+    for(i = 1; i <= nf; i++)
+    {
+        printf("File %d: ", i);
+        scanf("%d", &f[i]);
+    }
+
+    for(i = 1; i <= nf; i++)
+    {
+        for(j = 1; j <= nb; j++)
+        {
+            if(bf[j] != 1)
+            {
+                temp = b[j] - f[i];
+                if(temp >= 0)
+                {
+                    ff[i] = j;
+                    bf[j] = 1;
+                    frag[i] = temp;
+                    break;
+                }
+            }
+        }
+    }
+    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
+    for(i = 1; i <= nf; i++)
+    {
+        printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);
+    }
+}
+
+
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p10">#include<stdio.h>
+#define MAX 25
+
+int main()
+{
+    int i, j, nb, nf, temp, lowest = 10000;
+    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
+    static int bf[MAX], ff[MAX];
+
+    printf("\n----Best Fit----\n");
+    printf("\nEnter the number of blocks: ");
+    scanf("%d", &nb);
+
+    printf("Enter the number of files: ");
+    scanf("%d", &nf);
+
+    printf("\nEnter the size of the blocks: \n");
+    for(i = 1; i <= nb; i++)
+    {
+        printf("Block %d: ", i);
+        scanf("%d", &b[i]);
+    }
+    printf("\nEnter the size of files: \n");
+    for(i = 1; i <= nf; i++)
+    {
+        printf("File %d: ", i);
+        scanf("%d", &f[i]);
+    }
+
+    for(i = 1; i <= nf; i++)
+    {
+        lowest = 10000;
+        for(j = 1; j <= nb; j++)
+        {
+            if(bf[j] != 1)
+            {
+                temp = b[j] - f[i];
+                if(temp >= 0 && temp < lowest)
+                {
+                    ff[i] = j;
+                    lowest = temp;
+                }
+            }
+        }
+        frag[i] = lowest;
+        bf[ff[i]] = 1;
+    }
+    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
+    for(i = 1; i <= nf; i++)
+    {
+      if(ff[i] != -1)
+        printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);
+
+    }
+}
+
+
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<textarea id="p10">#include<stdio.h>
+#define MAX 25
+
+int main()
+{
+    int i, j, nb, nf, temp, highest = 0;
+    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
+    static int bf[MAX], ff[MAX];
+
+    printf("\n----Worst Fit----\n");
+    printf("\nEnter the number of blocks: ");
+    scanf("%d", &nb);
+
+    printf("Enter the number of files: ");
+    scanf("%d", &nf);
+
+    printf("\nEnter the size of the blocks: \n");
+    for(i = 1; i <= nb; i++)
+    {
+        printf("Block %d: ", i);
+        scanf("%d", &b[i]);
+    }
+    printf("\nEnter the size of files: \n");
+    for(i = 1; i <= nf; i++)
+    {
+        printf("File %d: ", i);
+        scanf("%d", &f[i]);
+    }
+
+    for(i = 1; i <= nf; i++)
+    {
+        highest = -1;
+        for(j = 1; j <= nb; j++)
+        {
+            if(bf[j] != 1)
+            {
+                temp = b[j] - f[i];
+                if(temp >= 0 && temp > highest)
+                {
+                    ff[i] = j;
+                    highest = temp;
+                }
+            }
+        }
+        frag[i] = highest;
+        bf[ff[i]] = 1;
+    }
+    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
+    for(i = 1; i <= nf; i++)
+    {
+        if(ff[i] != -1)
+            printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);      
+    }
+}
+
+
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p10">
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p10">
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<script>
+  function copy(id) {
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text);
+  }
+</script>
+
+</body>
+</html>
