@@ -47,6 +47,8 @@
   <button onclick="copy('p2')">1b</button>
   <button onclick="copy('p3')">1c</button>
   <button onclick="copy('p4')">2a</button>
+  <button onclick="copy('p12')">2b</button>
+  <button onclick="copy('p13')">2c</button>
   <button onclick="copy('p5')">3</button>
   <button onclick="copy('p6')">4a</button>
   <button onclick="copy('p7')">4b.</button>
@@ -573,12 +575,132 @@ int main()
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p12">
+<textarea id="p12">#include<stdio.h>
+
+int main()
+{
+    int n, i, j, temp;
+    int pno[10], bt[10], wt[10], tt[10];
+    float sum = 0, at = 0;
+
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+    printf("Enter the burst time of each processes: \n");
+    for(i = 0; i < n; i++)
+    {
+        pno[i] = i;
+        printf("P%d: ", i);
+        scanf("%d", &bt[i]);
+    }
+    for(i = 0; i < n-1; i++)
+    {
+        for(j = i+1; j < n; j++)
+        {
+            if(bt[i] > bt[j])
+            {
+                temp = bt[i];
+                bt[i] = bt[j];
+                bt[j] = temp;
+
+                temp = pno[i];
+                pno[i] = pno[j];
+                pno[j] = temp;
+            }
+        }
+    }
+    wt[0] = 0;
+    for(i = 0; i < n-1; i++)
+    {
+        wt[i+1] = wt[i] + bt[i];
+        sum += wt[i+1];
+    }
+    printf("\nProcess\tBT\tWT\tTAT\n");
+    for(i = 0; i < n; i++)
+    {
+        tt[i] = bt[i] + wt[i];
+        at += tt[i];
+        printf("P%d\t%d\t%d\t%d\n", pno[i], bt[i], wt[i], tt[i]);
+    }
+    printf("\nAverage Waiting time = %.2f", sum/n);
+    printf("\nAverage TurnAround time = %.2f", at/n);
+}
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p13">
+<textarea id="p13">#include <stdio.h>
+
+int main()
+{
+    int n, q, time = 0, done;
+    int bt[10], rt[10], ct[10];
+    int i;
+    float wt = 0, tat = 0;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    printf("Enter time quantum: ");
+    scanf("%d", &q);
+
+    for(i = 0; i < n; i++)
+    {
+        printf("Enter burst time of P%d: ", i + 1);
+        scanf("%d", &bt[i]);
+        rt[i] = bt[i];     
+        ct[i] = 0;         
+    }
+
+    printf("\nProcess\tStart\tEnd\tRemaining\n");
+
+    do
+    {
+        done = 1;
+
+        for(i = 0; i < n; i++)
+        {
+            if(rt[i] > 0)
+            {
+                done = 0;
+                int start = time;
+
+                if(rt[i] > q)
+                {
+                    time += q;
+                    rt[i] -= q;
+                }
+                else
+                {
+                    time += rt[i];
+                    rt[i] = 0;
+                    ct[i] = time;
+                }
+
+                printf("P%d\t%d\t%d\t%d\n",
+                       i + 1, start, time, rt[i]);
+            }
+        }
+    } while(!done);
+
+    printf("\nProcess\tWT\tTAT\n");
+
+    for(i = 0; i < n; i++)
+    {
+        int t = ct[i];          
+        int w = t - bt[i];      
+
+        wt += w;
+        tat += t;
+
+        printf("P%d\t%d\t%d\n", i + 1, w, t);
+    }
+
+    printf("\nAverage Waiting Time = %.2f", wt / n);
+    printf("\nAverage Turnaround Time = %.2f\n", tat / n);
+
+    return 0;
+}
+
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -592,4 +714,3 @@ int main()
 
 </body>
 </html>
-
