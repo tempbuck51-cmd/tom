@@ -3,703 +3,589 @@
 <head>
   <title>Program Copy</title>
 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Button Interface</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 40px;
+      height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
 
     .container {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 24px;
       width: fit-content;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      animation: float 6s ease-in-out infinite;
     }
 
-    button {
-      display: block;
-      margin-bottom: 10px;
-      padding: 8px 15px;
-      font-size: 16px;
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 300px;
+    }
+
+    .btn {
+      position: relative;
+      padding: 18px 24px;
+      font-size: 17px;
+      font-weight: 600;
       border: none;
-      border-radius: 5px;
-      background: #007bff;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
       color: white;
       cursor: pointer;
-      width: 80px;
+      width: 140px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    button:hover {
-      background: #0056b3;
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.7s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px rgba(106, 17, 203, 0.5);
+      background: linear-gradient(135deg, #7a1bdb 0%, #357dfc 100%);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      transition: transform 0.1s;
+    }
+
+    .btn-icon {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .btn:nth-child(2) {
+      background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.3);
+    }
+
+    .btn:nth-child(2):hover {
+      box-shadow: 0 12px 25px rgba(255, 65, 108, 0.5);
+      background: linear-gradient(135deg, #FF516C 0%, #FF5B3B 100%);
+    }
+
+    .btn:nth-child(3) {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
+    }
+
+    .btn:nth-child(3):hover {
+      box-shadow: 0 12px 25px rgba(17, 153, 142, 0.5);
+      background: linear-gradient(135deg, #21a99e 0%, #48ff8d 100%);
+    }
+
+    .btn:nth-child(4) {
+      background: linear-gradient(135deg, #FFA62E 0%, #EA4C89 100%);
+      box-shadow: 0 8px 20px rgba(255, 166, 46, 0.3);
+    }
+
+    .btn:nth-child(4):hover {
+      box-shadow: 0 12px 25px rgba(255, 166, 46, 0.5);
+      background: linear-gradient(135deg, #FFB63E 0%, #FA5C99 100%);
+    }
+
+    .btn:nth-child(5) {
+      background: linear-gradient(135deg, #654ea3 0%, #da98b4 100%);
+      box-shadow: 0 8px 20px rgba(101, 78, 163, 0.3);
+    }
+
+    .btn:nth-child(5):hover {
+      box-shadow: 0 12px 25px rgba(101, 78, 163, 0.5);
+      background: linear-gradient(135deg, #755eb3 0%, #eaa8c4 100%);
+    }
+
+    .btn:nth-child(6) {
+      background: linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%);
+      box-shadow: 0 8px 20px rgba(54, 209, 220, 0.3);
+    }
+
+    .btn:nth-child(6):hover {
+      box-shadow: 0 12px 25px rgba(54, 209, 220, 0.5);
+      background: linear-gradient(135deg, #46E1EC 0%, #6B96F5 100%);
+    }
+
+    .title {
+      text-align: center;
+      color: white;
+      font-size: 28px;
+      margin-bottom: 30px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 25%;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #6a11cb, transparent);
+      border-radius: 3px;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 100;
+      border-left: 5px solid #6a11cb;
+    }
+
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
 
     textarea {
       display: none;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      .button-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
-
 <body>
 
 <div class="container">
-  <button onclick="copy('p1')">1a</button>
-  <button onclick="copy('p2')">1b</button>
-  <button onclick="copy('p3')">1c</button>
-  <button onclick="copy('p4')">2a</button>
-  <button onclick="copy('p12')">2b</button>
-  <button onclick="copy('p13')">2c</button>
-  <button onclick="copy('p5')">3</button>
-  <button onclick="copy('p6')">4a</button>
-  <button onclick="copy('p7')">4b.</button>
-  <button onclick="copy('p8')">5</button>
-  <button onclick="copy('p9')">6a</button>
-  <button onclick="copy('p10')">6b</button>
-  <button onclick="copy('p11')">6c</button>
-
+  <div class="title">Quick Actions</div>
+  <div class="button-grid">
+    <button class="btn" onclick="copy('p1')">
+      <span class="btn-icon">↗</span>
+      <span>6</span>
+    </button>
+    <button class="btn" onclick="copy('p2')">
+      <span class="btn-icon">↗</span>
+      <span>7a</span>
+    </button>
+    <button class="btn" onclick="copy('p3')">
+      <span class="btn-icon">↗</span>
+      <span>7b</span>
+    </button>
+    <button class="btn" onclick="copy('p4')">
+      <span class="btn-icon">↗</span>
+      <span>8</span>
+    </button>
+    <button class="btn" onclick="copy('p5')">
+      <span class="btn-icon">↗</span>
+      <span>9</span>
+    </button>
+    <button class="btn" onclick="copy('p6')">
+      <span class="btn-icon">↗</span>
+      <span>10</span>
+    </button>
+  </div>
 </div>
+
 
 <!-- Programs stored safely -->
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-<textarea id="p1">#include<stdio.h>
-#include<unistd.h>
-#include<sys/types.h>
-
-int main()
-{
-    int id, childid;
-    id = getpid();
-    childid = fork();
-
-    if(childid > 0)
-    {
-        printf("\nI am in the parent process %d", id);
-        printf("\nI am in the parent process %d", getpid());
-        printf("\nI am in the parent process %d", getppid());
-    }
-    else
-    {
-        printf("\nI am in the child process %d", id);
-        printf("\nI am in the child process %d", getpid());
-        printf("\nI am in the child process %d", getppid());
-    }
-}
+<textarea id="p1">import plotly.graph_objects as go 
+from plotly.offline import plot  
+# Student data 
+students_data = { 
+    'name': ['Anil', 'Sunil', 'Kumar', 'Rajesh', 'Naveen'], 
+    'height': [160, 155, 170, 165, 175], 
+    'weight': [55, 50, 65, 60, 70], 
+    'age': [20, 19, 21, 20, 22] 
+} 
+# Create text labels for hover 
+hover_text = [ 
+    f'name: {name}<br>height: {height}<br>weight: {weight}<br>age: {age}' 
+    for name, height, weight, age in zip(students_data['name'], students_data['height'], 
+students_data['weight'], students_data['age']) 
+] 
+# Create the figure 
+fig = go.Figure(data=[ 
+    go.Scatter3d( 
+        x=students_data['height'], 
+        y=students_data['weight'], 
+        z=students_data['age'], 
+        mode='markers', 
+        marker=dict( 
+            size=10, 
+            color='blue', 
+            opacity=0.8 
+        ), 
+        text=hover_text 
+    ) 
+]) 
+# Update layout 
+fig.update_layout( 
+    scene=dict( 
+        xaxis_title='Height', 
+        yaxis_title='Weight', 
+        zaxis_title='Age' 
+    ), 
+    title='3D Scatter Plot of Student Data' 
+) 
+# Plot the figure 
+plot(fig, filename='student_plot.html')
+fig.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p2">#include<stdio.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<stdlib.h>
-#include<sys/wait.h>
-#include<errno.h>
-
-int main()
-{
-    pid_t pid;
-    int rv;
-
-    pid = fork();
-    
-    if(pid == -1)
-    {
-        perror("fork");
-        exit(1);
-    }
-    else if(pid == 0)
-    {
-        printf("\nChild: this is child process\n");
-        fflush(stdout);
-        printf("Child: My pid is %d\n", getpid());
-        printf("Child: My parent's pid is %d\n", getppid());
-        printf("Child: Enter my exit status(make it small): ");
-        scanf("%d", &rv);
-        printf("Child: i'm outta here!\n");
-        exit(rv);
-    }
-    else{
-        printf("\nParent: this is parent process\n");
-        printf("Parent: My pid is %d\n", getpid());
-        fflush(stdout);
-        wait(&rv);
-        printf("Parent: My child's pid is %d\n", pid);
-        printf("Parent: My exit status is %d\n", WEXITSTATUS(rv));
-        printf("Parent: i'm outta here!\n");
-    }
-}
+<textarea id="p2">import plotly.express as px 
+import pandas as pd 
+from plotly.offline import plot 
+data = { 
+    'Date': pd.date_range(start='2024-01-01', periods=5, freq='D'), 
+    'studying_hours': [4, 3, 2, 5, 1], 
+    'sleep_hours': [7, 6, 7, 8, 7] 
+} 
+df = pd.DataFrame(data) 
+fig = px.line(df, x='Date', y=['studying_hours', 'sleep_hours'], 
+              color_discrete_sequence=['blue', 'green'], 
+              title="Engineering students studying and sleeping time series", 
+              labels={'value': 'hours', 'variable': 'activity'}) 
+fig.update_layout(legend_title_text='activity') 
+plot(fig, filename='student_statistics.html')
+fig.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p3">#include<stdio.h>
-#include<unistd.h>
-#include<sys/types.h>
-
-int main(int argc, char *argv[])
-{
-    printf("Before execv\n");
-    execv("/bin/ls", argv);
-    printf("After execv\n");
-}
+<textarea id="p3">import plotly.express as px 
+from plotly.offline import plot 
+gapminder_data = px.data.gapminder() 
+print(gapminder_data.head(10).to_string()) 
+df = gapminder_data.query("year == 2007") 
+fig = px.scatter_geo(df, 
+                     locations="iso_alpha", 
+                     color="continent", 
+                     hover_name="country", 
+                     size="pop", 
+                     projection="natural earth") 
+plot(fig, filename='gapminder_2007.html')
+fig.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p4">#include <stdio.h>
+<textarea id="p4">import pandas as pd
+import matplotlib.pyplot as plt
 
-int main()
-{
-    int n;
-    int at[10], bt[10], st[10], ft[10], wt[10], tt[10];
-    char pn[10][10];
-    int totwt = 0, tottt = 0;
+# Load the dataset
+file_path = 'c:/canadian_immigration_data.csv'
+data = pd.read_csv(file_path)
 
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
+# Extract years from 1980 to 2013
+years = list(map(str, range(1980, 2014)))
 
-    for(int i = 0; i < n; i++)
-    {
-        printf("Enter process name, arrival time, burst time: ");
-        scanf("%s %d %d", pn[i], &at[i], &bt[i]);
-    }
+# Set Country as index
+data.set_index('Country', inplace=True)
 
-    // FCFS Scheduling
-    for(int i = 0; i < n; i++)
-    {
-        if(i == 0)
-            st[i] = at[i];
-        else
-            st[i] = (ft[i-1] > at[i]) ? ft[i-1] : at[i];
+# =========================
+# 1. Area Plot for Top 6 Immigrant Countries (1980–2013)
+# =========================
+top_countries = data[years].sum(axis=1).nlargest(6).index
+top_6_data = data.loc[top_countries, years].transpose()
 
-        ft[i] = st[i] + bt[i];
-        wt[i] = st[i] - at[i];
-        tt[i] = ft[i] - at[i];
+plt.figure(figsize=(14, 8))
+top_6_data.plot(kind='area', stacked=False, alpha=0.5)
+plt.title('Top 6 Immigrant Countries to Canada (1980–2013)')
+plt.ylabel('Number of Immigrants')
+plt.xlabel('Year')
+plt.legend(title='Country')
+plt.grid(True)
+plt.show()
 
-        totwt += wt[i];
-        tottt += tt[i];
-    }
+# =========================
+# 2. Bar Chart: India (1980–2013)
+# =========================
+india_data = data.loc['India', years].astype(int)
 
-    printf("\nPname\tAT\tBT\tST\tFT\tWT\tTT\n");
-    for(int i = 0; i < n; i++)
-    {
-        printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\n",
-               pn[i], at[i], bt[i], st[i], ft[i], wt[i], tt[i]);
-    }
+plt.figure(figsize=(14, 8))
+india_data.plot(kind='bar')
+plt.title('Year-wise Immigrants from India to Canada (1980–2013)')
+plt.ylabel('Number of Immigrants')
+plt.xlabel('Year')
+plt.grid(True)
+plt.show()
 
-    printf("\nAverage Waiting Time = %.2f", (float)totwt / n);
-    printf("\nAverage Turnaround Time = %.2f\n", (float)tottt / n);
+# =========================
+# 3. Boxplot: India, Philippines, China
+# =========================
+selected_countries = ['India', 'Philippines', 'China']
+boxplot_data = data.loc[selected_countries, years].transpose()
 
-    return 0;
-}
+plt.figure(figsize=(14, 8))
+boxplot_data.plot(kind='box')
+plt.title('Boxplot of Immigrants (1980–2013)')
+plt.ylabel('Number of Immigrants')
+plt.xlabel('Country')
+plt.grid(True)
+plt.show()
 
-</textarea>
+# =========================
+# 4. Area Chart & Pie Chart: India vs France
+# =========================
+selected_countries = ['India', 'France']
+selected_data = data.loc[selected_countries, years]
 
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+# Area Chart
+plt.figure(figsize=(14, 8))
+selected_data.transpose().plot(kind='area', stacked=False, alpha=0.5)
+plt.title('Immigrants from India and France (1980–2013)')
+plt.ylabel('Number of Immigrants')
+plt.xlabel('Year')
+plt.legend(title='Country')
+plt.grid(True)
+plt.show()
 
-<textarea id="p5">#include<stdio.h>
-#include<stdlib.h>
+# Pie Chart
+total_immigrants = selected_data.sum(axis=1)
 
-int mutex = 1, full = 0, empty = 10, data = 0;
+plt.figure(figsize=(8, 8))
+total_immigrants.plot(kind='pie', autopct='%1.1f%%', startangle=140)
+plt.title('Total Immigrants from India and France (1980–2013)')
+plt.ylabel('')
+plt.show()
 
-void producer()
-{
-    --mutex;
-    ++full;
-    --empty;
-    data++;
-    printf("\nProducer produces item number: %d", data);
-    ++mutex;
-}
-void consumer()
-{
-    --mutex;
-    --full;
-    ++empty;
-    printf("\nConsumer consumes item number: %d", data);
-    data--;
-    ++mutex;
-}
+# =========================
+# 5. Scatter Plot & Histogram: Fiji vs Singapore (2013)
+# =========================
+fiji_singapore_2013 = data.loc[['Fiji', 'Singapore'], '2013'].astype(int)
 
-int main()
-{
-    int n;
-    printf("\n1.Producer");
-    printf("\n2.Consumer");
-    printf("\n3.Exit");
-    while(1)
-    {
-        printf("\nEnter your choice: ");
-        scanf("%d", &n);
-        switch (n)
-        {
-            case 1:
-                if(mutex == 1 && empty != 0)
-                    producer();
-                else   
-                    printf("\nBuffer is full. Cannot produce.");
-                break;
-            case 2:
-                if(mutex == 1 && full != 0)
-                    consumer();
-                else    
-                    printf("\nBuffer is empty. Cannot consume.");
-                break;
-            case 3:
-                exit(0);
-                break;
-        }
-    }
-    return 0;
-}
-</textarea>
+# Scatter Plot
+plt.figure(figsize=(10, 6))
+plt.scatter(['Fiji', 'Singapore'], fiji_singapore_2013)
+plt.title('Immigrants from Fiji and Singapore in 2013')
+plt.ylabel('Number of Immigrants')
+plt.grid(True)
+plt.show()
 
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-<textarea id="p6">#include<stdio.h>
-#include<string.h>
-#include<fcntl.h>
-#include<sys/stat.h>
-#include<sys/types.h>
-#include<unistd.h>
-
-int main()
-{
-    int fd;
-    char *myfifo = "/tmp/myfifo";
-    char writemsg[80], readmsg[80];
-    mkfifo(myfifo, 0666);
-
-    while(1)
-    {
-        fd = open(myfifo, O_WRONLY);
-        fgets(writemsg, 80, stdin);
-        write(fd, writemsg, strlen(writemsg)+1);
-        close(fd);
-
-        fd = open(myfifo, O_RDONLY);
-        read(fd, readmsg, 80);
-        printf("User2: %s", readmsg);
-        close(fd);
-    }
-}
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-
-<textarea id="p7">#include<stdio.h>
-#include<string.h>
-#include<fcntl.h>
-#include<sys/stat.h>
-#include<sys/types.h>
-#include<unistd.h>
-
-int main()
-{
-    int fd;
-    char *myfifo = "/tmp/myfifo";
-    char writemsg[80], readmsg[80];
-    mkfifo(myfifo, 0666);
-
-    while(1)
-    {
-        fd = open(myfifo, O_RDONLY);
-        read(fd, readmsg, 80);
-        printf("User1: %s", readmsg);
-        close(fd);  
-
-        fd = open(myfifo, O_WRONLY);
-        fgets(writemsg, 80, stdin);
-        write(fd, writemsg, strlen(writemsg)+1);
-        close(fd);
-    }
-}
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-
-<textarea id="p8">#include<stdio.h>
-
-int main()
-{
-    int n, m, i, j, k, count = 0;
-    int max[10][10], alloc[10][10], need[10][10];
-    int avail[10], work[10], safe[10];
-    int finish[10] = {0};
-
-    printf("Enter number of process: ");
-    scanf("%d", &n);
-    printf("Enter number of resources: ");
-    scanf("%d", &m);
-    printf("Enter number of available resources: ");
-    for(i = 0; i < m; i++)
-        scanf("%d", &avail[i]);
-    printf("Enter the MAX matrix: \n");
-    for(i = 0; i < n; i++) 
-        for(j = 0; j < m; j++)
-            scanf("%d", &max[i][j]);
-    printf("Enter the allocation matrix: \n");
-    for(i = 0; i < n; i++) 
-        for(j = 0; j < m; j++)
-            scanf("%d", &alloc[i][j]);
-    for(i = 0; i < n; i++) 
-        for(j = 0; j < m; j++)
-            need[i][j] = max[i][j] - alloc[i][j];
-    for(j = 0; j < m; j++)
-        work[j] = avail[j];
-
-    while(count < n)
-    {   
-        int found = 0;
-        for(i = 0; i < n; i++)
-        {
-            if(!finish[i])
-            {
-                for(j = 0; j < m; j++)
-                {
-                    if(need[i][j] > work[j])
-                    {
-                        break;
-                    }
-                }
-                if(j == m)
-                {
-                    for(k = 0; k < m; k++)
-                    {
-                        work[k] += alloc[i][k];
-                    }
-                    safe[count++] = i;
-                    found = 1;
-                    finish[i] = 1;
-                }
-            }
-        }
-        if(!found)
-        {
-            printf("\nThe system is NOT in safe state\n");
-            return 0;
-        }
-    }
-    printf("\nThe system is in a safe state\n Safe sequence is : ");
-    for(i = 0; i < n; i++)
-        printf("P%d ", safe[i]);
-    return 0;
-}
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-
-<textarea id="p9">#include<stdio.h>
-#define MAX 25
-
-int main()
-{
-    int i, j, nb, nf, temp;
-    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
-    static int bf[MAX], ff[MAX];
-
-    printf("\n----First Fit----\n");
-    printf("\nEnter the number of blocks: ");
-    scanf("%d", &nb);
-
-    printf("Enter the number of files: ");
-    scanf("%d", &nf);
-
-    printf("\nEnter the size of the blocks: \n");
-    for(i = 1; i <= nb; i++)
-    {
-        printf("Block %d: ", i);
-        scanf("%d", &b[i]);
-    }
-    printf("\nEnter the size of files: \n");
-    for(i = 1; i <= nf; i++)
-    {
-        printf("File %d: ", i);
-        scanf("%d", &f[i]);
-    }
-
-    for(i = 1; i <= nf; i++)
-    {
-        for(j = 1; j <= nb; j++)
-        {
-            if(bf[j] != 1)
-            {
-                temp = b[j] - f[i];
-                if(temp >= 0)
-                {
-                    ff[i] = j;
-                    bf[j] = 1;
-                    frag[i] = temp;
-                    break;
-                }
-            }
-        }
-    }
-    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
-    for(i = 1; i <= nf; i++)
-    {
-        printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);
-    }
-}
-
+# Histogram
+plt.figure(figsize=(10, 6))
+plt.hist(fiji_singapore_2013, bins=5, alpha=0.7)
+plt.title('Histogram of Immigrants from Fiji and Singapore (2013)')
+plt.xlabel('Number of Immigrants')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
+<textarea id="p5">import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 
-<textarea id="p10">#include<stdio.h>
-#define MAX 25
+data_2019 = pd.read_csv(r"C:\Jan_2019_ontime.csv")
+data_2020 = pd.read_csv(r"C:\Jan_2020_ontime.csv")
 
-int main()
-{
-    int i, j, nb, nf, temp, lowest = 10000;
-    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
-    static int bf[MAX], ff[MAX];
+print("Data 2019:")
+print(data_2019.head())
 
-    printf("\n----Best Fit----\n");
-    printf("\nEnter the number of blocks: ");
-    scanf("%d", &nb);
+print("\nData 2020:")
+print(data_2020.head())
 
-    printf("Enter the number of files: ");
-    scanf("%d", &nf);
+if 'DISTANCE' not in data_2019.columns or 'DISTANCE' not in data_2020.columns:
+    raise ValueError("DISTANCE column is missing from the dataset")
 
-    printf("\nEnter the size of the blocks: \n");
-    for(i = 1; i <= nb; i++)
-    {
-        printf("Block %d: ", i);
-        scanf("%d", &b[i]);
-    }
-    printf("\nEnter the size of files: \n");
-    for(i = 1; i <= nf; i++)
-    {
-        printf("File %d: ", i);
-        scanf("%d", &f[i]);
-    }
+plt.figure(figsize=(12, 6))
+plt.hist(data_2019['DISTANCE'], bins=50, alpha=0.5, label='2019')
+plt.hist(data_2020['DISTANCE'], bins=50, alpha=0.5, label='2020')
+plt.xlabel('Distance')
+plt.ylabel('Frequency')
+plt.title('Distance Distribution for 2019 and 2020')
+plt.legend()
+plt.show()
 
-    for(i = 1; i <= nf; i++)
-    {
-        lowest = 10000;
-        for(j = 1; j <= nb; j++)
-        {
-            if(bf[j] != 1)
-            {
-                temp = b[j] - f[i];
-                if(temp >= 0 && temp < lowest)
-                {
-                    ff[i] = j;
-                    lowest = temp;
-                }
-            }
-        }
-        frag[i] = lowest;
-        bf[ff[i]] = 1;
-    }
-    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
-    for(i = 1; i <= nf; i++)
-    {
-      if(ff[i] != -1)
-        printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);
+dest_airports = [11778, 11267]
 
-    }
-}
+data_2019_filtered = data_2019[data_2019['DEST_AIRPORT_ID'].isin(dest_airports)]
+data_2020_filtered = data_2020[data_2020['DEST_AIRPORT_ID'].isin(dest_airports)]
 
+count_2019 = data_2019_filtered['DEST_AIRPORT_ID'].value_counts().reset_index()
+count_2020 = data_2020_filtered['DEST_AIRPORT_ID'].value_counts().reset_index()
 
-</textarea>
+count_2019.columns = ['DEST_AIRPORT_ID', 'count_2019']
+count_2020.columns = ['DEST_AIRPORT_ID', 'count_2020']
 
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+count_merged = pd.merge(
+    count_2019,
+    count_2020,
+    on='DEST_AIRPORT_ID',
+    how='outer'
+).fillna(0)
 
+count_melted = pd.melt(
+    count_merged,
+    id_vars=['DEST_AIRPORT_ID'],
+    value_vars=['count_2019', 'count_2020']
+)
 
-<textarea id="p11">#include<stdio.h>
-#define MAX 25
+fig_bar = px.bar(
+    count_melted,
+    x='DEST_AIRPORT_ID',
+    y='value',
+    color='variable',
+    barmode='group',
+    labels={
+        'value': 'Number of Flights',
+        'DEST_AIRPORT_ID': 'Destination Airport ID'
+    },
+    title='Number of Flights for Destination Airport IDs 11778 and 11267'
+)
 
-int main()
-{
-    int i, j, nb, nf, temp, highest = 0;
-    int b[MAX] = {0}, f[MAX] = {0}, frag[MAX] = {0};
-    static int bf[MAX], ff[MAX];
-
-    printf("\n----Worst Fit----\n");
-    printf("\nEnter the number of blocks: ");
-    scanf("%d", &nb);
-
-    printf("Enter the number of files: ");
-    scanf("%d", &nf);
-
-    printf("\nEnter the size of the blocks: \n");
-    for(i = 1; i <= nb; i++)
-    {
-        printf("Block %d: ", i);
-        scanf("%d", &b[i]);
-    }
-    printf("\nEnter the size of files: \n");
-    for(i = 1; i <= nf; i++)
-    {
-        printf("File %d: ", i);
-        scanf("%d", &f[i]);
-    }
-
-    for(i = 1; i <= nf; i++)
-    {
-        highest = -1;
-        for(j = 1; j <= nb; j++)
-        {
-            if(bf[j] != 1)
-            {
-                temp = b[j] - f[i];
-                if(temp >= 0 && temp > highest)
-                {
-                    ff[i] = j;
-                    highest = temp;
-                }
-            }
-        }
-        frag[i] = highest;
-        bf[ff[i]] = 1;
-    }
-    printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragment:");
-    for(i = 1; i <= nf; i++)
-    {
-        if(ff[i] != -1)
-            printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);      
-    }
-}
-
+fig_bar.show()
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p12">#include<stdio.h>
-
-int main()
-{
-    int n, i, j, temp;
-    int pno[10], bt[10], wt[10], tt[10];
-    float sum = 0, at = 0;
-
-    printf("Enter the number of processes: ");
-    scanf("%d", &n);
-    printf("Enter the burst time of each processes: \n");
-    for(i = 0; i < n; i++)
-    {
-        pno[i] = i;
-        printf("P%d: ", i);
-        scanf("%d", &bt[i]);
-    }
-    for(i = 0; i < n-1; i++)
-    {
-        for(j = i+1; j < n; j++)
-        {
-            if(bt[i] > bt[j])
-            {
-                temp = bt[i];
-                bt[i] = bt[j];
-                bt[j] = temp;
-
-                temp = pno[i];
-                pno[i] = pno[j];
-                pno[j] = temp;
-            }
-        }
-    }
-    wt[0] = 0;
-    for(i = 0; i < n-1; i++)
-    {
-        wt[i+1] = wt[i] + bt[i];
-        sum += wt[i+1];
-    }
-    printf("\nProcess\tBT\tWT\tTAT\n");
-    for(i = 0; i < n; i++)
-    {
-        tt[i] = bt[i] + wt[i];
-        at += tt[i];
-        printf("P%d\t%d\t%d\t%d\n", pno[i], bt[i], wt[i], tt[i]);
-    }
-    printf("\nAverage Waiting time = %.2f", sum/n);
-    printf("\nAverage TurnAround time = %.2f", at/n);
-}
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-<textarea id="p13">#include <stdio.h>
-
-int main()
-{
-    int n, q, time = 0, done;
-    int bt[10], rt[10], ct[10];
-    int i;
-    float wt = 0, tat = 0;
-
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
-
-    printf("Enter time quantum: ");
-    scanf("%d", &q);
-
-    for(i = 0; i < n; i++)
-    {
-        printf("Enter burst time of P%d: ", i + 1);
-        scanf("%d", &bt[i]);
-        rt[i] = bt[i];     
-        ct[i] = 0;         
-    }
-
-    printf("\nProcess\tStart\tEnd\tRemaining\n");
-
-    do
-    {
-        done = 1;
-
-        for(i = 0; i < n; i++)
-        {
-            if(rt[i] > 0)
-            {
-                done = 0;
-                int start = time;
-
-                if(rt[i] > q)
-                {
-                    time += q;
-                    rt[i] -= q;
-                }
-                else
-                {
-                    time += rt[i];
-                    rt[i] = 0;
-                    ct[i] = time;
-                }
-
-                printf("P%d\t%d\t%d\t%d\n",
-                       i + 1, start, time, rt[i]);
-            }
-        }
-    } while(!done);
-
-    printf("\nProcess\tWT\tTAT\n");
-
-    for(i = 0; i < n; i++)
-    {
-        int t = ct[i];          
-        int w = t - bt[i];      
-
-        wt += w;
-        tat += t;
-
-        printf("P%d\t%d\t%d\n", i + 1, w, t);
-    }
-
-    printf("\nAverage Waiting Time = %.2f", wt / n);
-    printf("\nAverage Turnaround Time = %.2f\n", tat / n);
-
-    return 0;
-}
+<textarea id="p6"> 
+import pandas as pd 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+# Load the dataset 
+file_path = 'C:/Placement_data_full_class.csv' 
+placement_data = pd.read_csv(file_path) 
+# Setting the style for the plots 
+sns.set(style="whitegrid") 
+ 
+#1.Histogram for 'ssc_p' (Secondary Education Percentage) 
+plt.figure(figsize=(10, 5)) 
+plt.hist(placement_data['ssc_p'], bins=10, edgecolor='black') 
+plt.title('Histogram of Secondary Education Percentage (ssc_p)') 
+plt.xlabel('Percentage') 
+plt.ylabel('Frequency') 
+plt.show() 
+ 
+ 
+ 
+# 1.Bar Chart for 'degree_t' (Type of Degree) 
+degree_counts = placement_data['degree_t'].value_counts() 
+sns.barplot(x=degree_counts.index, y=degree_counts.values, palette='viridis', legend=False) 
+plt.title('Bar Chart of Degree Types') 
+plt.xlabel('Degree Type') 
+plt.ylabel('Count') 
+plt.show() 
+ 
+ 
+ 
+# 2.Facet Plot for 'ssc_p' vs 'hsc_p' colored by 'gender' 
+g = sns.FacetGrid(placement_data, col="gender", height=5) 
+g.map(sns.scatterplot, "ssc_p", "hsc_p", alpha=.7) 
+g.add_legend() 
+plt.show() 
+ 
+ 
+ 
+# 2.Pair Plot for numerical features 
+numerical_features = ['ssc_p', 'hsc_p', 'degree_p', 'etest_p', 'mba_p'] 
+sns.pairplot(placement_data[numerical_features]) 
+plt.show() 
+         
+ 
+# 3.Area Chart for 'ssc_p' (Secondary Education Percentage) 
+placement_data_sorted = placement_data.sort_values('ssc_p') 
+placement_data_sorted['ssc_p'] = pd.to_numeric(placement_data_sorted['ssc_p'], 
+errors='coerce') 
+placement_data_sorted = placement_data_sorted.dropna(subset=['ssc_p']) 
+plt.figure(figsize=(10, 5)) 
+plt.fill_between(placement_data_sorted.index, placement_data_sorted['ssc_p'], 
+color="skyblue", alpha=0.4) 
+plt.plot(placement_data_sorted.index, placement_data_sorted['ssc_p'], color="Slateblue", 
+alpha=0.6) 
+plt.title('Area Chart of Secondary Education Percentage (ssc_p)') 
+plt.xlabel('Index') 
+plt.ylabel('Percentage') 
+plt.show() 
+ 
+ 
+ 
+#3. Pie Chart for 'status' (Placement Status) 
+status_counts = placement_data['status'].value_counts() 
+plt.figure(figsize=(7, 7)) 
+plt.pie(status_counts, labels=status_counts.index, autopct='%1.1f%%', 
+colors=['#ff9999','#66b3ff']) 
+plt.title('Pie Chart of Placement Status') 
+plt.show() 
+ 
 
 </textarea>
 
