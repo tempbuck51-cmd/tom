@@ -258,86 +258,91 @@
 <!-- Programs stored safely -->
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 <textarea id="p1">import plotly.graph_objects as go 
-from plotly.offline import plot  
-# Student data 
-students_data = { 
-    'name': ['Anil', 'Sunil', 'Kumar', 'Rajesh', 'Naveen'], 
-    'height': [160, 155, 170, 165, 175], 
-    'weight': [55, 50, 65, 60, 70], 
-    'age': [20, 19, 21, 20, 22] 
-} 
-# Create text labels for hover 
-hover_text = [ 
-    f'name: {name}<br>height: {height}<br>weight: {weight}<br>age: {age}' 
-    for name, height, weight, age in zip(students_data['name'], students_data['height'], 
-students_data['weight'], students_data['age']) 
-] 
-# Create the figure 
-fig = go.Figure(data=[ 
-    go.Scatter3d( 
-        x=students_data['height'], 
-        y=students_data['weight'], 
-        z=students_data['age'], 
-        mode='markers', 
-        marker=dict( 
-            size=10, 
-            color='blue', 
-            opacity=0.8 
-        ), 
-        text=hover_text 
-    ) 
-]) 
-# Update layout 
+import numpy as np 
+# Generate data for the 3D surface plot 
+x = np.linspace(-5, 5, 100) 
+y = np.linspace(-5, 5, 100) 
+X, Y = np.meshgrid(x, y) 
+Z = np.sin(np.sqrt(X**2 + Y**2)) 
+# Create a 3D surface plot 
+fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y)]) 
+# Customize the layout 
 fig.update_layout( 
-    scene=dict( 
-        xaxis_title='Height', 
-        yaxis_title='Weight', 
-        zaxis_title='Age' 
-    ), 
-    title='3D Scatter Plot of Student Data' 
+title="3D Surface Plot", 
+scene=dict( 
+xaxis_title="X-axis", 
+yaxis_title="Y-axis", 
+zaxis_title="Z-axis", 
 ) 
-# Plot the figure 
-plot(fig, filename='student_plot.html')
+) 
 fig.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p2">import plotly.express as px 
-import pandas as pd 
-from plotly.offline import plot 
-data = { 
-    'Date': pd.date_range(start='2024-01-01', periods=5, freq='D'), 
-    'studying_hours': [4, 3, 2, 5, 1], 
-    'sleep_hours': [7, 6, 7, 8, 7] 
-} 
-df = pd.DataFrame(data) 
-fig = px.line(df, x='Date', y=['studying_hours', 'sleep_hours'], 
-              color_discrete_sequence=['blue', 'green'], 
-              title="Engineering students studying and sleeping time series", 
-              labels={'value': 'hours', 'variable': 'activity'}) 
-fig.update_layout(legend_title_text='activity') 
-plot(fig, filename='student_statistics.html')
+<textarea id="p2">import plotly.graph_objects as go
+import pandas as pd
+
+df = pd.DataFrame({
+    'Date': pd.date_range('2023-01-01', periods=10),
+    'Value': [10, 12, 15, 20, 18, 22, 25, 28, 30, 32]
+})
+
+fig = go.Figure(go.Scatter(
+    x=df['Date'],
+    y=df['Value'],
+    mode='lines+markers'
+))
+
+fig.update_layout(
+    title="Time Series Line Chart",
+    xaxis_title="Date",
+    yaxis_title="Value",
+    xaxis=dict(rangeslider=dict(visible=True))
+)
+
 fig.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p3">import plotly.express as px 
-from plotly.offline import plot 
-gapminder_data = px.data.gapminder() 
-print(gapminder_data.head(10).to_string()) 
-df = gapminder_data.query("year == 2007") 
-fig = px.scatter_geo(df, 
-                     locations="iso_alpha", 
-                     color="continent", 
-                     hover_name="country", 
-                     size="pop", 
-                     projection="natural earth") 
-plot(fig, filename='gapminder_2007.html')
+<textarea id="p3">import plotly.graph_objects as go
+
+data = {
+    'State': ['Delhi', 'Maharashtra', 'Tamil Nadu', 'Karnataka', 'Kerala'],
+    'Latitude': [28.6139, 19.7515, 11.1271, 15.3173, 10.8505],
+    'Longitude': [77.2090, 75.7139, 78.6569, 75.7139, 76.2711],
+    'Value': [100, 200, 300, 400, 500]
+}
+
+fig = go.Figure(go.Scattergeo(
+    lon=data['Longitude'],
+    lat=data['Latitude'],
+    text=[f"{s}<br>Value: {v}" for s, v in zip(data['State'], data['Value'])],
+    mode='markers',
+    marker=dict(
+        size=10,
+        opacity=0.7,
+        color=data['Value'],
+        colorscale='Viridis',
+        colorbar=dict(title='Value')
+    )
+))
+
+fig.update_geos(
+    scope='asia',
+    showcoastlines=True,
+    coastlinecolor="Black",
+    showland=True,
+    landcolor="lightgray"
+)
+
+fig.update_layout(title='Indian States Map')
+
 fig.show()
+
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -345,103 +350,38 @@ fig.show()
 <textarea id="p4">import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load the dataset
-file_path = 'c:/canadian_immigration_data.csv'
-data = pd.read_csv(file_path)
+data = pd.read_csv("sample.csv")
+data.columns = data.columns.str.strip()
 
-# Extract years from 1980 to 2013
-years = list(map(str, range(1980, 2014)))
-
-# Set Country as index
+data.rename(columns={'OdName': 'Country'}, inplace=True)
 data.set_index('Country', inplace=True)
 
-# =========================
-# 1. Area Plot for Top 6 Immigrant Countries (1980–2013)
-# =========================
-top_countries = data[years].sum(axis=1).nlargest(6).index
-top_6_data = data.loc[top_countries, years].transpose()
+all_years = []
+for year in range(1980, 2014):
+    all_years.append(str(year))
 
-plt.figure(figsize=(14, 8))
-top_6_data.plot(kind='area', stacked=False, alpha=0.5)
-plt.title('Top 6 Immigrant Countries to Canada (1980–2013)')
-plt.ylabel('Number of Immigrants')
+years_1990_2013 = []
+for year in range(1990, 2014):
+    years_1990_2013.append(str(year))
+
+data['Total'] = data[all_years].sum(axis=1)
+
+top_countries = data.sort_values(by='Total', ascending=False).head(6)
+
+plot_data = top_countries[years_1990_2013].T
+plot_data.plot(kind='area', stacked=False, figsize=(10, 6))
+
+plt.title('Top 6 Immigrant Countries to Canada (1990–2013)')
 plt.xlabel('Year')
-plt.legend(title='Country')
-plt.grid(True)
+plt.ylabel('Number of Immigrants')
 plt.show()
 
-# =========================
-# 2. Bar Chart: India (1980–2013)
-# =========================
-india_data = data.loc['India', years].astype(int)
+immigration_per_year = data[all_years].sum()
 
-plt.figure(figsize=(14, 8))
-india_data.plot(kind='bar')
-plt.title('Year-wise Immigrants from India to Canada (1980–2013)')
-plt.ylabel('Number of Immigrants')
+immigration_per_year.plot(kind='bar', figsize=(12, 6))
+plt.title('Total Global Immigration to Canada (1980–2013)')
 plt.xlabel('Year')
-plt.grid(True)
-plt.show()
-
-# =========================
-# 3. Boxplot: India, Philippines, China
-# =========================
-selected_countries = ['India', 'Philippines', 'China']
-boxplot_data = data.loc[selected_countries, years].transpose()
-
-plt.figure(figsize=(14, 8))
-boxplot_data.plot(kind='box')
-plt.title('Boxplot of Immigrants (1980–2013)')
 plt.ylabel('Number of Immigrants')
-plt.xlabel('Country')
-plt.grid(True)
-plt.show()
-
-# =========================
-# 4. Area Chart & Pie Chart: India vs France
-# =========================
-selected_countries = ['India', 'France']
-selected_data = data.loc[selected_countries, years]
-
-# Area Chart
-plt.figure(figsize=(14, 8))
-selected_data.transpose().plot(kind='area', stacked=False, alpha=0.5)
-plt.title('Immigrants from India and France (1980–2013)')
-plt.ylabel('Number of Immigrants')
-plt.xlabel('Year')
-plt.legend(title='Country')
-plt.grid(True)
-plt.show()
-
-# Pie Chart
-total_immigrants = selected_data.sum(axis=1)
-
-plt.figure(figsize=(8, 8))
-total_immigrants.plot(kind='pie', autopct='%1.1f%%', startangle=140)
-plt.title('Total Immigrants from India and France (1980–2013)')
-plt.ylabel('')
-plt.show()
-
-# =========================
-# 5. Scatter Plot & Histogram: Fiji vs Singapore (2013)
-# =========================
-fiji_singapore_2013 = data.loc[['Fiji', 'Singapore'], '2013'].astype(int)
-
-# Scatter Plot
-plt.figure(figsize=(10, 6))
-plt.scatter(['Fiji', 'Singapore'], fiji_singapore_2013)
-plt.title('Immigrants from Fiji and Singapore in 2013')
-plt.ylabel('Number of Immigrants')
-plt.grid(True)
-plt.show()
-
-# Histogram
-plt.figure(figsize=(10, 6))
-plt.hist(fiji_singapore_2013, bins=5, alpha=0.7)
-plt.title('Histogram of Immigrants from Fiji and Singapore (2013)')
-plt.xlabel('Number of Immigrants')
-plt.ylabel('Frequency')
-plt.grid(True)
 plt.show()
 
 </textarea>
@@ -450,143 +390,67 @@ plt.show()
 
 <textarea id="p5">import pandas as pd
 import matplotlib.pyplot as plt
-import plotly.express as px
-import plotly.graph_objects as go
 
-data_2019 = pd.read_csv(r"C:\Jan_2019_ontime.csv")
-data_2020 = pd.read_csv(r"C:\Jan_2020_ontime.csv")
+df = pd.read_csv("flights_data.csv")
+df.columns = df.columns.str.strip().str.replace(r'\r', '', regex=True)
+df = df[df['ARR_DEL15'] == 0]
 
-print("Data 2019:")
-print(data_2019.head())
+airports = df['ORIGIN'].value_counts().nlargest(2).index.tolist()
+a1, a2 = airports
+df2 = df[df['ORIGIN'].isin([a1, a2])]
 
-print("\nData 2020:")
-print(data_2020.head())
-
-if 'DISTANCE' not in data_2019.columns or 'DISTANCE' not in data_2020.columns:
-    raise ValueError("DISTANCE column is missing from the dataset")
-
-plt.figure(figsize=(12, 6))
-plt.hist(data_2019['DISTANCE'], bins=50, alpha=0.5, label='2019')
-plt.hist(data_2020['DISTANCE'], bins=50, alpha=0.5, label='2020')
-plt.xlabel('Distance')
-plt.ylabel('Frequency')
-plt.title('Distance Distribution for 2019 and 2020')
-plt.legend()
+# Box Plot
+plt.boxplot(
+    [df2[df2['ORIGIN'] == a1]['DISTANCE'],
+     df2[df2['ORIGIN'] == a2]['DISTANCE']],
+    labels=[a1, a2]
+)
+plt.title("Distance Distribution by Origin Airport")
 plt.show()
 
-dest_airports = [11778, 11267]
-
-data_2019_filtered = data_2019[data_2019['DEST_AIRPORT_ID'].isin(dest_airports)]
-data_2020_filtered = data_2020[data_2020['DEST_AIRPORT_ID'].isin(dest_airports)]
-
-count_2019 = data_2019_filtered['DEST_AIRPORT_ID'].value_counts().reset_index()
-count_2020 = data_2020_filtered['DEST_AIRPORT_ID'].value_counts().reset_index()
-
-count_2019.columns = ['DEST_AIRPORT_ID', 'count_2019']
-count_2020.columns = ['DEST_AIRPORT_ID', 'count_2020']
-
-count_merged = pd.merge(
-    count_2019,
-    count_2020,
-    on='DEST_AIRPORT_ID',
-    how='outer'
-).fillna(0)
-
-count_melted = pd.melt(
-    count_merged,
-    id_vars=['DEST_AIRPORT_ID'],
-    value_vars=['count_2019', 'count_2020']
-)
-
-fig_bar = px.bar(
-    count_melted,
-    x='DEST_AIRPORT_ID',
-    y='value',
-    color='variable',
-    barmode='group',
-    labels={
-        'value': 'Number of Flights',
-        'DEST_AIRPORT_ID': 'Destination Airport ID'
-    },
-    title='Number of Flights for Destination Airport IDs 11778 and 11267'
-)
-
-fig_bar.show()
+# Bar Plot
+counts = df2.groupby('ORIGIN').size().reset_index(name='Flight_Count')
+plt.bar(counts['ORIGIN'], counts['Flight_Count'], color=['skyblue', 'lightcoral'])
+plt.title("Number of On-Time Flights by Origin Airport")
+plt.show()
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p6"> 
-import pandas as pd 
-import matplotlib.pyplot as plt 
-import seaborn as sns 
-# Load the dataset 
-file_path = 'C:/Placement_data_full_class.csv' 
-placement_data = pd.read_csv(file_path) 
-# Setting the style for the plots 
-sns.set(style="whitegrid") 
- 
-#1.Histogram for 'ssc_p' (Secondary Education Percentage) 
-plt.figure(figsize=(10, 5)) 
-plt.hist(placement_data['ssc_p'], bins=10, edgecolor='black') 
-plt.title('Histogram of Secondary Education Percentage (ssc_p)') 
-plt.xlabel('Percentage') 
-plt.ylabel('Frequency') 
-plt.show() 
- 
- 
- 
-# 1.Bar Chart for 'degree_t' (Type of Degree) 
-degree_counts = placement_data['degree_t'].value_counts() 
-sns.barplot(x=degree_counts.index, y=degree_counts.values, palette='viridis', legend=False) 
-plt.title('Bar Chart of Degree Types') 
-plt.xlabel('Degree Type') 
-plt.ylabel('Count') 
-plt.show() 
- 
- 
- 
-# 2.Facet Plot for 'ssc_p' vs 'hsc_p' colored by 'gender' 
-g = sns.FacetGrid(placement_data, col="gender", height=5) 
-g.map(sns.scatterplot, "ssc_p", "hsc_p", alpha=.7) 
-g.add_legend() 
-plt.show() 
- 
- 
- 
-# 2.Pair Plot for numerical features 
-numerical_features = ['ssc_p', 'hsc_p', 'degree_p', 'etest_p', 'mba_p'] 
-sns.pairplot(placement_data[numerical_features]) 
-plt.show() 
-         
- 
-# 3.Area Chart for 'ssc_p' (Secondary Education Percentage) 
-placement_data_sorted = placement_data.sort_values('ssc_p') 
-placement_data_sorted['ssc_p'] = pd.to_numeric(placement_data_sorted['ssc_p'], 
-errors='coerce') 
-placement_data_sorted = placement_data_sorted.dropna(subset=['ssc_p']) 
-plt.figure(figsize=(10, 5)) 
-plt.fill_between(placement_data_sorted.index, placement_data_sorted['ssc_p'], 
-color="skyblue", alpha=0.4) 
-plt.plot(placement_data_sorted.index, placement_data_sorted['ssc_p'], color="Slateblue", 
-alpha=0.6) 
-plt.title('Area Chart of Secondary Education Percentage (ssc_p)') 
-plt.xlabel('Index') 
-plt.ylabel('Percentage') 
-plt.show() 
- 
- 
- 
-#3. Pie Chart for 'status' (Placement Status) 
-status_counts = placement_data['status'].value_counts() 
-plt.figure(figsize=(7, 7)) 
-plt.pie(status_counts, labels=status_counts.index, autopct='%1.1f%%', 
-colors=['#ff9999','#66b3ff']) 
-plt.title('Pie Chart of Placement Status') 
-plt.show() 
- 
+<textarea id="p6">import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
+sns.set_style("whitegrid")
+
+df = pd.read_csv("placement.csv")
+
+plt.figure(figsize=(7, 6))
+sns.histplot(df['ssc_p'], bins=15, color='skyblue', edgecolor='black', kde=True)
+plt.title('Histogram of Secondary School Percentage (ssc_p)')
+plt.xlabel('SSC Percentage')
+plt.ylabel('Frequency')
+plt.tight_layout()
+plt.show()
+
+workex_counts = df['workex'].value_counts()
+labels = workex_counts.index
+sizes = workex_counts.values
+colors = ['lightcoral', 'skyblue']
+
+plt.figure(figsize=(6, 6))
+plt.pie(
+    sizes,
+    labels=labels,
+    autopct='%1.1f%%',
+    startangle=90,
+    colors=colors
+)
+plt.title('Pie Chart of Work Experience (workex) Proportions')
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
