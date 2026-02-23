@@ -229,39 +229,43 @@
   <div class="button-grid">
     <button class="btn" onclick="copy('p1')">
       <span class="btn-icon">↗</span>
-      <span>6</span>
+      <span>1</span>
     </button>
     <button class="btn" onclick="copy('p2')">
       <span class="btn-icon">↗</span>
-      <span>7a</span>
+      <span>2</span>
     </button>
     <button class="btn" onclick="copy('p3')">
       <span class="btn-icon">↗</span>
-      <span>7b</span>
+      <span>3</span>
     </button>
     <button class="btn" onclick="copy('p4')">
       <span class="btn-icon">↗</span>
-      <span>8</span>
+      <span>4</span>
     </button>
     <button class="btn" onclick="copy('p5')">
       <span class="btn-icon">↗</span>
-      <span>9</span>
+      <span>5</span>
     </button>
     <button class="btn" onclick="copy('p6')">
       <span class="btn-icon">↗</span>
-      <span>10</span>
+      <span>6</span>
     </button>
     <button class="btn" onclick="copy('p7')">
       <span class="btn-icon">↗</span>
-      <span>8th csv link</span>
+      <span>7</span>
     </button>
     <button class="btn" onclick="copy('p8')">
       <span class="btn-icon">↗</span>
-      <span>9th csv link</span>
+      <span>8</span>
     </button>
     <button class="btn" onclick="copy('p9')">
       <span class="btn-icon">↗</span>
-      <span>10th csv link</span>
+      <span>9</span>
+    </button>
+    <button class="btn" onclick="copy('p10')">
+      <span class="btn-icon">↗</span>
+      <span>10</span>
     </button>
   </div>
 </div>
@@ -269,215 +273,1261 @@
 
 <!-- Programs stored safely -->
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-<textarea id="p1">import plotly.graph_objects as go 
-import numpy as np 
-# Generate data for the 3D surface plot 
-x = np.linspace(-5, 5, 100) 
-y = np.linspace(-5, 5, 100) 
-X, Y = np.meshgrid(x, y) 
-Z = np.sin(np.sqrt(X**2 + Y**2)) 
-# Create a 3D surface plot 
-fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y)]) 
-# Customize the layout 
-fig.update_layout( 
-title="3D Surface Plot", 
-scene=dict( 
-xaxis_title="X-axis", 
-yaxis_title="Y-axis", 
-zaxis_title="Z-axis", 
-) 
-) 
-fig.show()
+<textarea id="p1">#include<stdio.h> 
+#include<stdlib.h> 
+ 
+int array[50], n = 0; 
+ 
+void create() 
+{ 
+    printf("Enter the value of n: "); 
+    scanf("%d", &n); 
+    printf("Enter %d array element: ", n); 
+    for(int i = 0; i < n; i++) 
+    { 
+        scanf("%d", &array[i]); 
+    } 
+} 
+ 
+void display() 
+{ 
+    if(n == 0) 
+    { 
+        printf("Array is empty.\n"); 
+        return; 
+    } 
+    printf("Array elements are: "); 
+    for(int i = 0; i < n; i++) 
+    { 
+        printf("%d ", array[i]); 
+    } 
+} 
+ 
+void insert() 
+{ 
+    int value, pos; 
+    printf("Enter the element to be inserted: "); 
+    scanf("%d", &value); 
+    printf("Enter the position: "); 
+    scanf("%d", &pos); 
+ 
+    for(int i = n-1; i >= pos-1; i--) 
+    { 
+        array[i+1] = array[i]; 
+    } 
+    array[pos-1] = value; 
+    n++; 
+} 
+ 
+void delete() 
+{ 
+    int pos; 
+    printf("Enter the position to be deleted: "); 
+    scanf("%d", &pos); 
+    printf("Element %d Deleted.\n", array[pos-1]); 
+    for(int i = pos-1; i < n; i++) 
+    { 
+        array[i] = array[i+1]; 
+    } 
+    n--; 
+} 
+ 
+int main() 
+{ 
+    int choice; 
+    while(1) 
+    { 
+        printf("\n---Array Operations---\n"); 
+        printf("1.Creation\n2.Insertion\n3.Deletion\n4.Display\n5.Exit\n"); 
+        printf("Enter your choice: "); 
+        scanf("%d", &choice); 
+        switch(choice) 
+        { 
+            case 1: 
+                create(); 
+                break; 
+            case 2: 
+                insert(); 
+                break; 
+            case 3: 
+                delete(); 
+                break; 
+            case 4: 
+                display(); 
+                break; 
+            case 5: 
+                exit(0); 
+                break; 
+            default: 
+                printf("Invalid input.\n"); 
+                break; 
+        } 
+    } 
+} 
+ 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p2">import plotly.graph_objects as go
-import pandas as pd
-
-df = pd.DataFrame({
-    'Date': pd.date_range('2023-01-01', periods=10),
-    'Value': [10, 12, 15, 20, 18, 22, 25, 28, 30, 32]
-})
-
-fig = go.Figure(go.Scatter(
-    x=df['Date'],
-    y=df['Value'],
-    mode='lines+markers'
-))
-
-fig.update_layout(
-    title="Time Series Line Chart",
-    xaxis_title="Date",
-    yaxis_title="Value",
-    xaxis=dict(rangeslider=dict(visible=True))
-)
-
-fig.show()
+<textarea id="p2">#include<stdio.h> 
+#include<string.h> 
+ 
+void compute_lps(char* pattern, int* lps, int m) 
+{ 
+    int length = 0; 
+    int i = 1; 
+    lps[0] = 0; 
+ 
+    while(i < m) 
+    { 
+        if(pattern[i] == pattern[length]) 
+        { 
+            length++; 
+            lps[i] = length; 
+            i++; 
+        } 
+        else 
+        { 
+            if(length != 0) 
+                length = lps[length-1]; 
+            else 
+            { 
+                lps[i] = 0; 
+                i++; 
+            } 
+        } 
+    } 
+} 
+ 
+void kmp_search(char* pattern, char* text) 
+{ 
+    int M = strlen(pattern); 
+    int N = strlen(text); 
+    int lps[M]; 
+    compute_lps(pattern, lps, M); 
+    int i = 0; 
+    int j = 0; 
+ 
+    while(i < N) 
+    { 
+        if(pattern[j] == text[i]) 
+        { 
+            i++; 
+            j++; 
+        } 
+        if(j == M) 
+        { 
+            printf("Pattern found at %d index.\n", i-j); 
+            j = lps[j-1]; 
+        } 
+        else if(i < N && pattern[j] != text[i]) 
+        { 
+            if(j != 0) 
+                j = lps[j-1]; 
+            else 
+                i++; 
+        } 
+} 
+} 
+int main() 
+{ 
+} 
+char text[100], pattern[100]; 
+printf("Enter the text: "); 
+scanf("%s", text); 
+printf("Enter the pattern: "); 
+scanf("%s", pattern); 
+kmp_search(pattern, text); 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-<textarea id="p3">import plotly.graph_objects as go
+<textarea id="p3">#include<stdio.h>
+#include<stdlib.h>
 
-data = {
-    'State': ['Delhi', 'Maharashtra', 'Tamil Nadu', 'Karnataka', 'Kerala'],
-    'Latitude': [28.6139, 19.7515, 11.1271, 15.3173, 10.8505],
-    'Longitude': [77.2090, 75.7139, 78.6569, 75.7139, 76.2711],
-    'Value': [100, 200, 300, 400, 500]
+#define max 5
+int stack[5];
+int top = -1;
+
+void push()
+{
+    int value;
+    if(top == max-1)
+    {
+        printf("Stack Overflow.\n");
+        return;
+    }
+    printf("Enter the element to push: ");
+    scanf("%d", &value);
+    stack[++top] = value;
 }
 
-fig = go.Figure(go.Scattergeo(
-    lon=data['Longitude'],
-    lat=data['Latitude'],
-    text=[f"{s}<br>Value: {v}" for s, v in zip(data['State'], data['Value'])],
-    mode='markers',
-    marker=dict(
-        size=10,
-        opacity=0.7,
-        color=data['Value'],
-        colorscale='Viridis',
-        colorbar=dict(title='Value')
-    )
-))
+void pop()
+{
+    if(top == -1)
+    {
+        printf("Stack underflow.\n");
+        return;
+    }
+    printf("Element %d deleted.\n", stack[top--]);
+}
 
-fig.update_geos(
-    scope='asia',
-    showcoastlines=True,
-    coastlinecolor="Black",
-    showland=True,
-    landcolor="lightgray"
-)
+void display()
+{
+    if(top == -1)
+    {
+        printf("Stack is Empty.\n");
+        return;
+    }
+    printf("Stack elements: ");
+    for(int i = 0; i <= top; i++)
+    {
+        printf("%d ", stack[i]);
+    }
+}
 
-fig.update_layout(title='Indian States Map')
+int main()
+{
+    int choice;
+    while(1)
+    {
+        printf("\n\n---Stack Operations---\n");
+        printf("1.Push\n2.Pop\n3.Display\n4.Exit\nEnter your choice: ");
+        scanf("%d", &choice);
+        switch(choice)
+        {
+            case 1:
+                push();
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                exit(0);
+                break;
+            default:
+                printf("Invalid input.\n");
+                break;
+        }
+    }
+}
+</textarea>
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-fig.show()
+<textarea id="p4">#include<stdio.h>
+
+int stack[50];
+int top = -1;
+
+void push(int x)
+{
+    if(top < 49)
+        stack[++top] = x;
+    else
+        printf("Stack Overflow\n");
+}
+
+int pop()
+{
+    if(top != -1)
+        return stack[top--];
+    else
+    {
+        printf("Stack Underflow\n");
+        return -1;
+    }
+}
+
+int precedence(int x)
+{
+    if(x == '+'|| x == '-') return 1;
+    if(x == '*' || x == '/' || x == '%') return 2;
+    if(x == '^') return 3;
+    return 0;
+}
+
+int main()
+{
+    char input[50], output[50];
+    printf("Enter infix Expression: ");
+    scanf("%s", input);
+
+    int i, j = 0;
+
+    for(i = 0; input[i] != '\0'; i++)
+    {
+        if(
+            (input[i] >= 'a' && input[i] <= 'z') ||
+            (input[i] >= 'A' && input[i] <= 'Z') ||
+            (input[i] >= '0' && input[i] <= '9')
+        )
+        {
+            output[j++] = input[i];
+        }
+        else if(input[i] == '(')
+        {
+            push(input[i]);
+        }
+        else if(input[i] == ')')
+        {
+            while(top != -1 && stack[top] != '(')
+            {
+                output[j++] = pop();
+            }
+            if(top != -1)
+                pop();
+        }
+        else
+        {
+            while(top != -1 && 
+                  (precedence(stack[top]) > precedence(input[i]) ||
+                   (precedence(stack[top]) == precedence(input[i]) &&
+                    input[i] != '^')))
+            {
+                output[j++] = pop();
+            }
+            push(input[i]);
+        }
+    }
+
+    while(top != -1)
+    {
+        output[j++] = pop();
+    }
+
+    output[j] = '\0';
+
+    printf("Postfix Expression : %s\n", output);
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p5">#include<stdio.h> 
+#include<stdlib.h> 
+#define MAX 5 
+char circular_queue[MAX]; 
+int front = -1, rear = -1; 
+int isEmpty() 
+{ 
+} 
+if (front == -1 && rear == -1) 
+return 1; 
+else 
+return 0; 
+int isFull() 
+{ 
+} 
+if ((rear + 1) % MAX == front) 
+return 1; 
+else 
+return 0; 
+void insertElement(char element) 
+{ 
+    if (isFull()) 
+    { 
+        printf("Circular Queue Overflow\n"); 
+        return; 
+    } 
+    else if (isEmpty()) 
+    { 
+        front = rear = 0; 
+    } 
+    else 
+    { 
+        rear = (rear + 1) % MAX; 
+    } 
+    circular_queue[rear] = element; 
+} 
+ 
+void deleteElement() 
+{ 
+    if (isEmpty()) 
+    { 
+        printf("Circular Queue Underflow\n"); 
+        return; 
+    } 
+    else if (front == rear) 
+    { 
+        front = rear = -1; 
+    } 
+    else 
+    { 
+        front = (front + 1) % MAX; 
+    } 
+} 
+ 
+void display() 
+{ 
+    int i; 
+    if (isEmpty()) 
+    { 
+        printf("Circular Queue is empty\n"); 
+        return; 
+    } 
+    printf("Circular Queue elements: "); 
+    i = front; 
+    do 
+    { 
+        printf("%c ", circular_queue[i]); 
+        i = (i + 1) % MAX; 
+    } 
+    while (i != (rear + 1) % MAX); 
+    printf("\n"); 
+} 
+ 
+int main() 
+{ 
+    int choice; 
+    char element; 
+    do 
+    { 
+        printf("\n\n---- Circular Queue Menu ----\n"); 
+        printf("1. Insert an Element\n"); 
+        printf("2. Delete an Element\n"); 
+        printf("3. Display Circular Queue\n"); 
+        printf("4. Exit\n"); 
+        printf("Enter your choice: "); 
+        scanf("%d", &choice); 
+ 
+        switch(choice) 
+        { 
+        case 1: 
+            printf("Enter element to be inserted: "); 
+            scanf(" %c", &element); 
+            insertElement(element); 
+            break; 
+        case 2: 
+            deleteElement(); 
+            break; 
+        case 3: 
+            display(); 
+            break; 
+        case 4: 
+            printf("Exiting...\n"); 
+            break; 
+        default: 
+            printf("Invalid choice! Please enter a valid option.\n"); 
+        } 
+    } 
+    while(choice != 4); 
+ 
+    return 0; 
+}
+</textarea>
+
+ <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<textarea id="p6"> #include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* newNode(int value) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = value;
+    temp->next = NULL;
+    return temp;
+}
+
+// Insert at front
+struct Node* insertFront(struct Node* head, int value) {
+    struct Node* new_node = newNode(value);
+    new_node->next = head;
+    head = new_node;
+    return head;
+}
+
+// Delete an element if found
+struct Node* deleteElement(struct Node* head, int value) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return head;
+    }
+
+    struct Node* temp = head;
+    struct Node* prev = NULL;
+
+    // Case 1: value is in first node
+    if (temp != NULL && temp->data == value) {
+        head = temp->next;
+        free(temp);
+        printf("Element %d deleted.\n", value);
+        return head;
+    }
+
+    // Traverse to find the node
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Not found
+    if (temp == NULL) {
+        printf("Element %d not found in the list.\n", value);
+        return head;
+    }
+
+    // Delete the node
+    prev->next = temp->next;
+    free(temp);
+    printf("Element %d deleted.\n", value);
+
+    return head;
+}
+
+// Search an element
+void searchElement(struct Node* head, int value) {
+    struct Node* temp = head;
+    int pos = 1;
+
+    while (temp != NULL) {
+        if (temp->data == value) {
+            printf("Element %d found at position %d.\n", value, pos);
+            return;
+        }
+        temp = temp->next;
+        pos++;
+    }
+    printf("Element %d not found in the list.\n", value);
+}
+
+// Display list
+void displayList(struct Node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    struct Node* temp = head;
+    printf("List elements: ");
+
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("\n");
+}
+
+// Main menu-driven program
+int main() {
+    struct Node* head = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\n--- Singly Linked List Operations ---\n");
+        printf("1. Insert at Front\n");
+        printf("2. Delete Element\n");
+        printf("3. Search Element\n");
+        printf("4. Display List\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            printf("Enter value to insert: ");
+            scanf("%d", &value);
+            head = insertFront(head, value);
+            break;
+
+        case 2:
+            printf("Enter value to delete: ");
+            scanf("%d", &value);
+            head = deleteElement(head, value);
+            break;
+
+        case 3:
+            printf("Enter value to search: ");
+            scanf("%d", &value);
+            searchElement(head, value);
+            break;
+
+        case 4:
+            displayList(head);
+            break;
+
+        case 5:
+            printf("Exiting...\n");
+            exit(0);
+
+        default:
+            printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p4">import pandas as pd
-import matplotlib.pyplot as plt
+<textarea id="p7">#include <stdio.h>
+#include <stdlib.h>
 
-data = pd.read_csv("sample.csv")
-data.columns = data.columns.str.strip()
+/* Structure definition */
+struct Node
+{
+    int data;
+    struct Node *previous;
+    struct Node *next;
+};
 
-data.rename(columns={'OdName': 'Country'}, inplace=True)
-data.set_index('Country', inplace=True)
+/* Global head pointer */
+struct Node *head = NULL;
 
-all_years = []
-for year in range(1980, 2014):
-    all_years.append(str(year))
+/* Function declarations */
+void insertAtBeginning(int value);
+void deleteSpecific(int delValue);
+void insertLeft(int value, int key);
+void display();
 
-years_1990_2013 = []
-for year in range(1990, 2014):
-    years_1990_2013.append(str(year))
+/* Insert at beginning */
+void insertAtBeginning(int value)
+{
+    struct Node *newNode;
+    newNode = (struct Node *)malloc(sizeof(struct Node));
 
-data['Total'] = data[all_years].sum(axis=1)
+    newNode->data = value;
+    newNode->previous = NULL;
 
-top_countries = data.sort_values(by='Total', ascending=False).head(6)
+    if (head == NULL)
+    {
+        newNode->next = NULL;
+        head = newNode;
+    }
+    else
+    {
+        newNode->next = head;
+        head->previous = newNode;
+        head = newNode;
+    }
+}
 
-plot_data = top_countries[years_1990_2013].T
-plot_data.plot(kind='area', stacked=False, figsize=(10, 6))
+/* Delete a specific node */
+void deleteSpecific(int delValue)
+{
+    if (head == NULL)
+    {
+        printf("\nList is Empty!!! Deletion not possible.");
+        return;
+    }
 
-plt.title('Top 6 Immigrant Countries to Canada (1990–2013)')
-plt.xlabel('Year')
-plt.ylabel('Number of Immigrants')
-plt.show()
+    struct Node *temp = head;
 
-immigration_per_year = data[all_years].sum()
+    while (temp != NULL && temp->data != delValue)
+        temp = temp->next;
 
-immigration_per_year.plot(kind='bar', figsize=(12, 6))
-plt.title('Total Global Immigration to Canada (1980–2013)')
-plt.xlabel('Year')
-plt.ylabel('Number of Immigrants')
-plt.show()
+    if (temp == NULL)
+    {
+        printf("\nGiven node not found in the list.");
+        return;
+    }
+
+    /* Only one node */
+    if (head->next == NULL)
+    {
+        head = NULL;
+        free(temp);
+    }
+    /* First node */
+    else if (temp == head)
+    {
+        head = head->next;
+        head->previous = NULL;
+        free(temp);
+    }
+    /* Last node */
+    else if (temp->next == NULL)
+    {
+        temp->previous->next = NULL;
+        free(temp);
+    }
+    /* Middle node */
+    else
+    {
+        temp->previous->next = temp->next;
+        temp->next->previous = temp->previous;
+        free(temp);
+    }
+
+    printf("\nDeletion success!!!");
+}
+
+/* Insert a node to the left of given key */
+void insertLeft(int value, int key)
+{
+    if (head == NULL)
+    {
+        printf("\nList is Empty!!! Insertion not possible.");
+        return;
+    }
+
+    struct Node *temp = head;
+
+    while (temp != NULL && temp->data != key)
+        temp = temp->next;
+
+    if (temp == NULL)
+    {
+        printf("\nKey value not found in the list.");
+        return;
+    }
+
+    struct Node *newNode;
+    newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+
+    /* Inserting before first node */
+    if (temp == head)
+    {
+        newNode->previous = NULL;
+        newNode->next = head;
+        head->previous = newNode;
+        head = newNode;
+    }
+    else
+    {
+        newNode->next = temp;
+        newNode->previous = temp->previous;
+        temp->previous->next = newNode;
+        temp->previous = newNode;
+    }
+
+    printf("\nInsertion success!!!");
+}
+
+/* Display the list */
+void display()
+{
+    if (head == NULL)
+    {
+        printf("\nList is Empty!!!");
+    }
+    else
+    {
+        struct Node *temp = head;
+        printf("\nList elements are:\n");
+        printf("NULL <--- ");
+
+        while (temp->next != NULL)
+        {
+            printf("%d <===> ", temp->data);
+            temp = temp->next;
+        }
+
+        printf("%d ---> NULL\n", temp->data);
+    }
+}
+
+/* Main function */
+int main()
+{
+    int choice, value, key, n, i;
+
+    while (1)
+    {
+        printf("\n------------------------------");
+        printf("\nDOUBLY LINKED LIST OPERATIONS");
+        printf("\n------------------------------");
+        printf("\n1. Create list (Insert N nodes at beginning)");
+        printf("\n2. Delete a node with given data");
+        printf("\n3. Insert a node to the left of given key");
+        printf("\n4. Display the list");
+        printf("\n5. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("\nEnter number of nodes: ");
+            scanf("%d", &n);
+
+            for (i = 0; i < n; i++)
+            {
+                printf("Enter data for node %d: ", i + 1);
+                scanf("%d", &value);
+                insertAtBeginning(value);
+            }
+            break;
+
+        case 2:
+            printf("\nEnter the data to be deleted: ");
+            scanf("%d", &value);
+            deleteSpecific(value);
+            break;
+
+        case 3:
+            printf("\nEnter new node data: ");
+            scanf("%d", &value);
+            printf("Enter key value: ");
+            scanf("%d", &key);
+            insertLeft(value, key);
+            break;
+
+        case 4:
+            display();
+            break;
+
+        case 5:
+            printf("\nExiting program...");
+            exit(0);
+
+        default:
+            printf("\nInvalid choice!!!");
+        }
+    }
+
+    return 0;
+}
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p5">import pandas as pd
-import matplotlib.pyplot as plt
+<textarea id="p8">#include <stdio.h>
+#include <stdlib.h>
 
-df = pd.read_csv("flights_data.csv")
-df.columns = df.columns.str.strip().str.replace(r'\r', '', regex=True)
-df = df[df['ARR_DEL15'] == 0]
+/* Structure definition for BST node */
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
 
-airports = df['ORIGIN'].value_counts().nlargest(2).index.tolist()
-a1, a2 = airports
-df2 = df[df['ORIGIN'].isin([a1, a2])]
+/* Function to create a new node */
+struct Node* createNode(int value)
+{
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
 
-# Box Plot
-plt.boxplot(
-    [df2[df2['ORIGIN'] == a1]['DISTANCE'],
-     df2[df2['ORIGIN'] == a2]['DISTANCE']],
-    labels=[a1, a2]
-)
-plt.title("Distance Distribution by Origin Airport")
-plt.show()
+/* Function to insert a node in BST */
+struct Node* insert(struct Node *root, int value)
+{
+    if (root == NULL)
+        return createNode(value);
 
-# Bar Plot
-counts = df2.groupby('ORIGIN').size().reset_index(name='Flight_Count')
-plt.bar(counts['ORIGIN'], counts['Flight_Count'], color=['skyblue', 'lightcoral'])
-plt.title("Number of On-Time Flights by Origin Airport")
-plt.show()
+    if (value < root->data)
+        root->left = insert(root->left, value);
+    else if (value > root->data)
+        root->right = insert(root->right, value);
+    else
+        printf("Duplicate value %d ignored.\n", value);
+
+    return root;
+}
+
+/* Inorder Traversal */
+void inorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+/* Preorder Traversal */
+void preorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+/* Postorder Traversal */
+void postorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+/* Search function */
+struct Node* search(struct Node *root, int key)
+{
+    if (root == NULL || root->data == key)
+        return root;
+
+    if (key < root->data)
+        return search(root->left, key);
+    else
+        return search(root->right, key);
+}
+
+/* Function to find height of the BST */
+int height(struct Node *root)
+{
+    if (root == NULL)
+        return -1;
+
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+/* Main function */
+int main()
+{
+    struct Node *root = NULL;
+    int choice, key;
+    int elements[] = {6, 9, 5, 2, 8, 15, 24, 14, 7, 8, 5, 2};
+    int n = sizeof(elements) / sizeof(elements[0]);
+    int created = 0;
+
+    while (1)
+    {
+        printf("\n\n--- BST MENU ---");
+        printf("\n1. Create BST");
+        printf("\n2. Inorder Traversal");
+        printf("\n3. Preorder Traversal");
+        printf("\n4. Postorder Traversal");
+        printf("\n5. Search an Element");
+        printf("\n6. Display Height of BST");
+        printf("\n7. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                if (created)
+                {
+                    printf("BST already created.\n");
+                    break;
+                }
+                for (int i = 0; i < n; i++)
+                    root = insert(root, elements[i]);
+                created = 1;
+                printf("BST created successfully.\n");
+                break;
+
+            case 2:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Inorder Traversal: ");
+                    inorder(root);
+                }
+                break;
+
+            case 3:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Preorder Traversal: ");
+                    preorder(root);
+                }
+                break;
+
+            case 4:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Postorder Traversal: ");
+                    postorder(root);
+                }
+                break;
+
+            case 5:
+                printf("Enter key to search: ");
+                scanf("%d", &key);
+                if (search(root, key) != NULL)
+                    printf("Element %d found in BST.\n", key);
+                else
+                    printf("Element %d NOT found in BST.\n", key);
+                break;
+
+            case 6:
+                printf("Height of BST = %d\n", height(root));
+                break;
+
+            case 7:
+                printf("Exiting program...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice! Try again.\n");
+        }
+    }
+    return 0;
+}
 
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p6">import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+<textarea id="p9">#include <stdio.h>
+#include <stdlib.h>
 
-sns.set_style("whitegrid")
+/* Structure definition for BST node */
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
 
-df = pd.read_csv("placement.csv")
+/* Function to create a new node */
+struct Node* createNode(int value)
+{
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
 
-plt.figure(figsize=(7, 6))
-sns.histplot(df['ssc_p'], bins=15, color='skyblue', edgecolor='black', kde=True)
-plt.title('Histogram of Secondary School Percentage (ssc_p)')
-plt.xlabel('SSC Percentage')
-plt.ylabel('Frequency')
-plt.tight_layout()
-plt.show()
+/* Function to insert a node in BST */
+struct Node* insert(struct Node *root, int value)
+{
+    if (root == NULL)
+        return createNode(value);
 
-workex_counts = df['workex'].value_counts()
-labels = workex_counts.index
-sizes = workex_counts.values
-colors = ['lightcoral', 'skyblue']
+    if (value < root->data)
+        root->left = insert(root->left, value);
+    else if (value > root->data)
+        root->right = insert(root->right, value);
+    else
+        printf("Duplicate value %d ignored.\n", value);
 
-plt.figure(figsize=(6, 6))
-plt.pie(
-    sizes,
-    labels=labels,
-    autopct='%1.1f%%',
-    startangle=90,
-    colors=colors
-)
-plt.title('Pie Chart of Work Experience (workex) Proportions')
-plt.axis('equal')
-plt.tight_layout()
-plt.show()
+    return root;
+}
+
+/* Inorder Traversal */
+void inorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+/* Preorder Traversal */
+void preorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+/* Postorder Traversal */
+void postorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+/* Search function */
+struct Node* search(struct Node *root, int key)
+{
+    if (root == NULL || root->data == key)
+        return root;
+
+    if (key < root->data)
+        return search(root->left, key);
+    else
+        return search(root->right, key);
+}
+
+/* Function to find height of the BST */
+int height(struct Node *root)
+{
+    if (root == NULL)
+        return -1;
+
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+/* Main function */
+int main()
+{
+    struct Node *root = NULL;
+    int choice, key;
+    int elements[] = {6, 9, 5, 2, 8, 15, 24, 14, 7, 8, 5, 2};
+    int n = sizeof(elements) / sizeof(elements[0]);
+    int created = 0;
+
+    while (1)
+    {
+        printf("\n\n--- BST MENU ---");
+        printf("\n1. Create BST");
+        printf("\n2. Inorder Traversal");
+        printf("\n3. Preorder Traversal");
+        printf("\n4. Postorder Traversal");
+        printf("\n5. Search an Element");
+        printf("\n6. Display Height of BST");
+        printf("\n7. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                if (created)
+                {
+                    printf("BST already created.\n");
+                    break;
+                }
+                for (int i = 0; i < n; i++)
+                    root = insert(root, elements[i]);
+                created = 1;
+                printf("BST created successfully.\n");
+                break;
+
+            case 2:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Inorder Traversal: ");
+                    inorder(root);
+                }
+                break;
+
+            case 3:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Preorder Traversal: ");
+                    preorder(root);
+                }
+                break;
+
+            case 4:
+                if (root == NULL)
+                    printf("BST is empty.\n");
+                else
+                {
+                    printf("Postorder Traversal: ");
+                    postorder(root);
+                }
+                break;
+
+            case 5:
+                printf("Enter key to search: ");
+                scanf("%d", &key);
+                if (search(root, key) != NULL)
+                    printf("Element %d found in BST.\n", key);
+                else
+                    printf("Element %d NOT found in BST.\n", key);
+                break;
+
+            case 6:
+                printf("Height of BST = %d\n", height(root));
+                break;
+
+            case 7:
+                printf("Exiting program...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice! Try again.\n");
+        }
+    }
+    return 0;
+}
+
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<textarea id="p7">https://www.kaggle.com/datasets/ammaraahmad/immigration-to-canada
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-<textarea id="p8">https://www.kaggle.com/datasets/divyansh22/flight-delay-prediction
-</textarea>
-
- <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-<textarea id="p9">https://www.kaggle.com/datasets/barkhaverma/placement-data-full-class
+<textarea id="p10">#include <stdio.h> 
+#define MAX 100 
+int hashTable[MAX]; 
+int m; 
+/* Function to insert a key using Linear Probing */ 
+void insert(int key) 
+{ 
+int index, startIndex; 
+index = key % m;       
+startIndex = index; 
+ // Hash function 
+while (hashTable[index] != -1) 
+{ 
+index = (index + 1) % m;   // Linear probing 
+if (index == startIndex) 
+{ 
+printf("Hash table is full. Cannot insert key %d\n", key); 
+return; 
+} 
+} 
+hashTable[index] = key; 
+printf("Key %d inserted at address %d\n", key, index); 
+} 
+/* Function to display hash table */ 
+void display() 
+{ 
+int i; 
+printf("\nHash Table:\n"); 
+for (i = 0; i < m; i++) 
+{ 
+if (hashTable[i] != -1) 
+printf("Address %d : %d\n", i, hashTable[i]); 
+else 
+printf("Address %d : EMPTY\n", i); 
+} 
+} 
+int main() 
+{ 
+int n, key, i; 
+printf("Enter number of memory locations (m): "); 
+scanf("%d", &m); 
+// Initialize hash table 
+for (i = 0; i < m; i++) 
+hashTable[i] = -1; 
+printf("Enter number of employee records (N): "); 
+scanf("%d", &n); 
+printf("Enter %d employee keys (4-digit integers):\n", n); 
+for (i = 0; i < n; i++) 
+{ 
+} 
+scanf("%d", &key); 
+insert(key); 
+display(); 
+return 0; 
+}
 </textarea>
 
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -491,3 +1541,4 @@ plt.show()
 
 </body>
 </html>
+
