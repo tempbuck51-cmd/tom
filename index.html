@@ -1286,186 +1286,110 @@ int main()
  <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 <textarea id="p9">#include <stdio.h>
-#include <stdlib.h>
 
-/* Structure definition for BST node */
-struct Node
+int visited[20];
+
+/* DFS Function */
+void DFS(int graph[20][20], int n, int u)
 {
-    int data;
-    struct Node *left;
-    struct Node *right;
-};
+    int v;
+    printf("%d ", u);
+    visited[u] = 1;
 
-/* Function to create a new node */
-struct Node* createNode(int value)
-{
-    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = value;
-    newNode->left = NULL;
-    newNode->right = NULL;
-    return newNode;
-}
-
-/* Function to insert a node in BST */
-struct Node* insert(struct Node *root, int value)
-{
-    if (root == NULL)
-        return createNode(value);
-
-    if (value < root->data)
-        root->left = insert(root->left, value);
-    else if (value > root->data)
-        root->right = insert(root->right, value);
-    else
-        printf("Duplicate value %d ignored.\n", value);
-
-    return root;
-}
-
-/* Inorder Traversal */
-void inorder(struct Node *root)
-{
-    if (root != NULL)
+    for (v = 0; v < n; v++)
     {
-        inorder(root->left);
-        printf("%d ", root->data);
-        inorder(root->right);
+        if (graph[u][v] == 1 && visited[v] == 0)
+        {
+            DFS(graph, n, v);
+        }
     }
 }
 
-/* Preorder Traversal */
-void preorder(struct Node *root)
+/* BFS Function */
+void BFS(int graph[20][20], int n, int start)
 {
-    if (root != NULL)
+    int queue[20], front = 0, rear = 0;
+    int visited[20] = {0};
+    int u, v;
+
+    queue[rear++] = start;
+    visited[start] = 1;
+
+    while (front < rear)
     {
-        printf("%d ", root->data);
-        preorder(root->left);
-        preorder(root->right);
+        u = queue[front++];
+        printf("%d ", u);
+
+        for (v = 0; v < n; v++)
+        {
+            if (graph[u][v] == 1 && visited[v] == 0)
+            {
+                visited[v] = 1;
+                queue[rear++] = v;
+            }
+        }
     }
 }
 
-/* Postorder Traversal */
-void postorder(struct Node *root)
-{
-    if (root != NULL)
-    {
-        postorder(root->left);
-        postorder(root->right);
-        printf("%d ", root->data);
-    }
-}
-
-/* Search function */
-struct Node* search(struct Node *root, int key)
-{
-    if (root == NULL || root->data == key)
-        return root;
-
-    if (key < root->data)
-        return search(root->left, key);
-    else
-        return search(root->right, key);
-}
-
-/* Function to find height of the BST */
-int height(struct Node *root)
-{
-    if (root == NULL)
-        return -1;
-
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-
-    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
-}
-
-/* Main function */
 int main()
 {
-    struct Node *root = NULL;
-    int choice, key;
-    int elements[] = {6, 9, 5, 2, 8, 15, 24, 14, 7, 8, 5, 2};
-    int n = sizeof(elements) / sizeof(elements[0]);
-    int created = 0;
+    int graph[20][20];
+    int n, i, j, choice, start;
 
-    while (1)
+    printf("Enter number of cities (nodes): ");
+    scanf("%d", &n);
+
+    printf("Enter adjacency matrix (directed graph):\n");
+    for (i = 0; i < n; i++)
     {
-        printf("\n\n--- BST MENU ---");
-        printf("\n1. Create BST");
-        printf("\n2. Inorder Traversal");
-        printf("\n3. Preorder Traversal");
-        printf("\n4. Postorder Traversal");
-        printf("\n5. Search an Element");
-        printf("\n6. Display Height of BST");
-        printf("\n7. Exit");
-        printf("\nEnter your choice: ");
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    do
+    {
+        printf("\n---- MENU ----\n");
+        printf("1. Depth First Search (DFS)\n");
+        printf("2. Breadth First Search (BFS)\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice)
         {
             case 1:
-                if (created)
-                {
-                    printf("BST already created.\n");
-                    break;
-                }
-                for (int i = 0; i < n; i++)
-                    root = insert(root, elements[i]);
-                created = 1;
-                printf("BST created successfully.\n");
+                for (i = 0; i < n; i++)
+                    visited[i] = 0;
+
+                printf("Enter starting city (node): ");
+                scanf("%d", &start);
+
+                printf("Nodes reachable using DFS:\n");
+                DFS(graph, n, start);
+                printf("\n");
                 break;
 
             case 2:
-                if (root == NULL)
-                    printf("BST is empty.\n");
-                else
-                {
-                    printf("Inorder Traversal: ");
-                    inorder(root);
-                }
+                printf("Enter starting city (node): ");
+                scanf("%d", &start);
+
+                printf("Nodes reachable using BFS:\n");
+                BFS(graph, n, start);
+                printf("\n");
                 break;
 
             case 3:
-                if (root == NULL)
-                    printf("BST is empty.\n");
-                else
-                {
-                    printf("Preorder Traversal: ");
-                    preorder(root);
-                }
-                break;
-
-            case 4:
-                if (root == NULL)
-                    printf("BST is empty.\n");
-                else
-                {
-                    printf("Postorder Traversal: ");
-                    postorder(root);
-                }
-                break;
-
-            case 5:
-                printf("Enter key to search: ");
-                scanf("%d", &key);
-                if (search(root, key) != NULL)
-                    printf("Element %d found in BST.\n", key);
-                else
-                    printf("Element %d NOT found in BST.\n", key);
-                break;
-
-            case 6:
-                printf("Height of BST = %d\n", height(root));
-                break;
-
-            case 7:
                 printf("Exiting program...\n");
-                exit(0);
+                break;
 
             default:
                 printf("Invalid choice! Try again.\n");
         }
-    }
+
+    } while (choice != 3);
+
     return 0;
 }
 
@@ -1541,4 +1465,5 @@ return 0;
 
 </body>
 </html>
+
 
